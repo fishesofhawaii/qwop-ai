@@ -1,4 +1,10 @@
 
+var backhanded_compliments = ["I've seen better runs in my shorts", "You realize you're supposed to move forward, right?", "At least you tried...",
+                                "You call that an effort?", "Does it feel good to lose this much?", "Are your arms getting tired yet?", 
+                                "You should try out for the olympics", "Did you decide to suck when you got up this morning?", 
+                                "Try actually trying next time"
+]
+
 var   b2Vec2 = Box2D.Common.Math.b2Vec2
      , b2BodyDef = Box2D.Dynamics.b2BodyDef
      , b2Body = Box2D.Dynamics.b2Body
@@ -451,8 +457,48 @@ function lockRevoluteJoint(joint,torque) {
     joint.SetMotorSpeed(0);
     joint.EnableMotor(true);
 }
+function dim_undim(el){
+    el.style.opacity = 0
+    console.log("before the interval")
+    var decriment = false
+    int_id = window.setInterval(function(){
+
+        if (decriment == false){
+            el.style.opacity = parseFloat(el.style.opacity) + .03
+            console.log(el.style.opacity)
+            console.log("incre")
+
+        }
+        else if (decriment == true && parseFloat(el.style.opacity) <= 0){
+            el.style.opacity = 0
+            window.clearInterval(int_id)
+        }
+
+        else {
+            el.style.opacity = parseFloat(el.style.opacity) - .03
+            console.log(el.style.opacity)
+            console.log("decre")
+        }
+
+        if (decriment == false && parseFloat(el.style.opacity) >= 1.0){
+            decriment = true
+        } 
+    }, 20)
+
+}
 
 function resetRunner() {
+    el = document.getElementById("insult")
+
+    if (el.textContent.length >= 1){
+        var rand_int = Math.floor(Math.random() * backhanded_compliments.length)
+
+        el.textContent = backhanded_compliments[rand_int]
+        dim_undim(el)
+    }
+    else{
+       el.textContent = "  " 
+    }
 
     if (init) {
         // Has already been initialized at least once
